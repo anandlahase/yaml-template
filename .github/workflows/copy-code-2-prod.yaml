@@ -44,6 +44,7 @@ jobs:
       - name: path
         run: |
           pwd
+          ls /home/runner/work/yaml-template/yaml-template
       - name: Update Inputs
         run: |
           choice="${{ github.event.inputs.choice }}"
