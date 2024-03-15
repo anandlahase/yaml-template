@@ -8,9 +8,9 @@ on:
         required: true
         default: 'extraVars'
         options:
-          extraVars: 'Update extraVars'
-          inventory: 'Update inventory'
-          deploymentManifest: 'Update deploymentManifest'
+          - extraVars
+          - inventory
+          - deploymentManifest
   push:
     paths:
       - 'prod/*'
@@ -41,9 +41,9 @@ jobs:
 
       - name: Create prod/ directories if not exist
         run: |
-          mkdir -p prod/extraVars
-          mkdir -p prod/inventory
-          mkdir -p prod/deploymentManifest
+          mkdir -p ./prod/extraVars
+          mkdir -p ./prod/inventory
+          mkdir -p ./prod/deploymentManifest
 
       - name: path
         run: |
