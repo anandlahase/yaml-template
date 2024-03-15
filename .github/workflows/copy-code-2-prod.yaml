@@ -41,9 +41,9 @@ jobs:
 
       - name: Create prod/ directories if not exist
         run: |
-          mkdir -p ./prod/extraVars
-          mkdir -p ./prod/inventory
-          mkdir -p ./prod/deploymentManifest
+          mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/extraVars
+          mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/inventory
+          mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/deploymentManifest
 
       - name: path
         run: |
