@@ -38,12 +38,17 @@ jobs:
         with:
           ref: new_branch
           path: job_repo
-
       - name: Create prod/ directories if not exist
         run: |
-          mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/extraVars
-          mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/inventory
-          mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/deploymentManifest
+          if [ ! -d "./home/runner/work/yaml-template/yaml-template/prod/extraVars" ]; then
+              mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/extraVars
+          fi
+          if [ ! -d "./home/runner/work/yaml-template/yaml-template/prod/inventory" ]; then
+              mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/inventory
+          fi
+          if [ ! -d "./home/runner/work/yaml-template/yaml-template/prod/deploymentManifest" ]; then
+              mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/deploymentManifest
+          fi
 
       - name: path
         run: |
