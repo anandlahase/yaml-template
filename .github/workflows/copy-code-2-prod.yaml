@@ -40,14 +40,14 @@ jobs:
           path: job_repo
       - name: Create prod/ directories if not exist
         run: |
-          if [ ! -d "./home/runner/work/yaml-template/yaml-template/prod/extraVars" ]; then
-              mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/extraVars
+          if [ ! -d "./prod/extraVars" ]; then
+              mkdir -p ./prod/extraVars
           fi
-          if [ ! -d "./home/runner/work/yaml-template/yaml-template/prod/inventory" ]; then
-              mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/inventory
+          if [ ! -d "./prod//inventory" ]; then
+              mkdir -p ./prod/inventory
           fi
-          if [ ! -d "./home/runner/work/yaml-template/yaml-template/prod/deploymentManifest" ]; then
-              mkdir -p ./home/runner/work/yaml-template/yaml-template/prod/deploymentManifest
+          if [ ! -d "./prod/deploymentManifest" ]; then
+              mkdir -p ./prod/deploymentManifest
           fi
 
       - name: path
