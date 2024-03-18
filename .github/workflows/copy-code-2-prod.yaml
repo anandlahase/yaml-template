@@ -1,17 +1,18 @@
----
 name: Update and Merge Workflow
+
 on:
   workflow_dispatch:
     inputs:
       choice:
         type: choice
-        description: Select input to update
+        description: 'Select input to update'
         required: true
-        default: extraVars
+        default: 'extraVars'
         options:
           - extraVars
           - inventory
           - deploymentManifest
+
 jobs:
   update_and_merge:
     runs-on: ubuntu-latest
@@ -20,14 +21,17 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
+
       - name: Create Branch
         uses: peterjgrainger/action-create-branch@v2.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: update-${{ github.event.inputs.choice }}-inputs
-      - name: Verify Branch Creation
+          branch: 'update-${{ github.event.inputs.choice }}-inputs'
+
+      - name: Verify Branch Creation  
         run: echo "Branch created:${{ steps.create_branch.outputs.branch }}"
+
       - name: Create prod/ directories if not exist
         run: |
           if [ ! -d "$(pwd)/prod/extraVars" ]; then
@@ -45,17 +49,15 @@ jobs:
           ls -l $(pwd)/prod
       - name: Validate Input
         id: validate_input
-        run: >
+        run: |
           choice="${{ github.event.inputs.choice }}"
-
           if [[ $choice != "extraVars" && $choice != "inventory" && $choice != "deploymentManifest" ]]; then
             echo "Invalid choice. Please choose one of: extraVars, inventory, deploymentManifest"
             exit 1
           fi
-
           echo "::set-output name=CHOICE::$choice"
       - name: Run Script
-        run: >
+        run: |
           case $choice in
             "extraVars")
               echo "Contents of $(pwd)/non-prod/extraVars/ directory:"
@@ -74,10 +76,11 @@ jobs:
               # Similarly handle other cases
               ;;
             *)
-              echo "Invalid choice"
+            echo "Invalid choice"
               ;;
-          esac
+            esac
         shell: bash
+
       - name: Git Commit
         run: |
           ls -l $(pwd)/prod
@@ -86,44 +89,45 @@ jobs:
           git config --global user.name "GitHub Actions"
           git commit -m "Automated update of dropdown inputs"
       - name: Git Checkout Branch
-        run: git checkout -b update-${{ github.event.inputs.choice }}-inputs
+        run: git checkout -b update-${{ github.event.inputs.choice }}-inputs 
+
       - name: Git Push
         run: git push origin update-${{ github.event.inputs.choice }}-inputs
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          title: Update ${{ github.event.inputs.choice }} dropdown inputs
+          title: "Update ${{ github.event.inputs.choice }} dropdown inputs"
           head: update-${{ github.event.inputs.choice }}-inputs
           base: main
-          commit-message: Automated update of ${{ github.event.inputs.choice }} dropdown inputs
-          body: >
+          commit-message: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
+          body: |
             Automated update of ${{ github.event.inputs.choice }} dropdown inputs.
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Approve Pull Request
         if: steps.create_pull_request.outputs.pull-request-created == 'true'
-        run: >
+        run: |
           curl \
-          -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.inputs.pull-request-number }}/reviews" \
-          -d '{"event":"APPROVE"}'
-
+            -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.create_pull_request.outputs.pull-request-number }}/reviews \
+            -d '{"event":"APPROVE"}'
       - name: Merge Pull Request
         if: steps.create_pull_request.outputs.pull-request-created == 'true'
-        run: >
+        run: |
           curl \
           -X PUT \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
-          "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.inputs.pull-request-number }}/merge" \
+          https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.create_pull_request.outputs.pull-request-number }}/merge \
           -d '{"merge_method":"squash"}'
-
       - name: Delete Branch
         if: steps.merge_pull_request.outputs.pull-request-merged == 'true'
-        run: >
+        run: |
           curl \
           -X DELETE \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
-          "https://api.github.com/repos/${{ github.repository }}/git/refs/heads/${{ github.event.inputs.branch-name }}"
+          https://api.github.com/repos/${{ github.repository }}/git/refs/heads/update-${{ github.event.inputs.choice }}-inputs
