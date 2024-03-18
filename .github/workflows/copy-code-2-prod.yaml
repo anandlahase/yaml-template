@@ -91,6 +91,9 @@ jobs:
       - name: Git Checkout Branch
         run: git checkout -b update-${{ github.event.inputs.choice }}-inputs 
 
+      - name: Pull Changes
+        run: git pull origin main
+
       - name: Git Push
         run: git push origin update-${{ github.event.inputs.choice }}-inputs
 
