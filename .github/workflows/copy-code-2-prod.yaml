@@ -38,21 +38,21 @@ jobs:
           path: job_repo
       - name: Create prod/ directories if not exist
         run: |
-          if [ ! -d "prod/extraVars" ]; then
-              mkdir -p prod/extraVars
+          if [ ! -d "$(pwd)/prod/extraVars" ]; then
+              mkdir -p $(pwd)/prod/extraVars
           fi
-          if [ ! -d "prod/inventory" ]; then
-              mkdir -p prod/inventory
+          if [ ! -d "$(pwd)/prod/inventory" ]; then
+              mkdir -p $(pwd)/prod/inventory
           fi
-          if [ ! -d "prod/deploymentManifest" ]; then
-              mkdir -p prod/deploymentManifest
+          if [ ! -d "$(pwd)/prod/deploymentManifest" ]; then
+              mkdir -p $(pwd)/prod/deploymentManifest
           fi
 
       - name: path
         run: |
           pwd
           echo "Current directory: $(pwd)"
-          ls -l ./non-prod/extraVars/
+          ls -l $(pwd)/non-prod/extraVars/
 
       - name: Validate Input
         id: validate_input
