@@ -92,7 +92,7 @@ jobs:
 
       - name: Git Add
         run: |
-          git checkout New_branch
+          git checkout -b New_branch
           git add .
           git status
           pwd
