@@ -51,7 +51,6 @@ jobs:
           choice="${{ github.event.inputs.choice }}"
           if [[ $choice != "extraVars" && $choice != "inventory" && $choice != "deploymentManifest" ]]; then
             echo "Invalid choice. Please choose one of: extraVars, inventory, deploymentManifest"
-            exit 1
           fi
           echo "::set-output name=CHOICE::$choice"
 
