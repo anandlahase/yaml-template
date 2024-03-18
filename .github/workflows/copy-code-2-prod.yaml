@@ -34,7 +34,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          ref: new_branch
+          ref: New_branch
           path: job_repo
       - name: Create prod/ directories if not exist
         run: |
