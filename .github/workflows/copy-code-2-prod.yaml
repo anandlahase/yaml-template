@@ -95,7 +95,7 @@ jobs:
           git commit -m "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
 
       - name: Git Push
-        run: git push origin New_branch
+        run: git push -u origin New_branch
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
