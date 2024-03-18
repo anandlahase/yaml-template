@@ -45,7 +45,7 @@ jobs:
           if [ ! -d "$(pwd)/prod/deploymentManifest" ]; then
               mkdir -p $(pwd)/prod/deploymentManifest
           fi
-          ls -l $(pwd)
+          ls -l $(pwd)/prod
 
       - name: path
         run: |
