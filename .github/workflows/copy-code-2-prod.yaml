@@ -90,7 +90,10 @@ jobs:
 
       - name: Git Commit
         run: |
+          git config --global user.email "lahase.anand@gmail.com"
+          git config --global user.name "anandlahase"
           git commit -am "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
+          echo
 
       - name: Git Push
         run: git push -u New_branch:New_branch
