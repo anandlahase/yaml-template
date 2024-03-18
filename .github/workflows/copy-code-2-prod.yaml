@@ -55,7 +55,7 @@ jobs:
         run: |
           pwd
           echo "Current directory: $(pwd)"
-          ls -l ./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/
+          ls -l non-prod/extraVars/
 
       - name: Validate Input
         id: validate_input
