@@ -76,9 +76,9 @@ jobs:
               # Similarly handle other cases
               ;;
             *)
-            echo "Invalid choice"
+              echo "Invalid choice"
               ;;
-            esac
+          esac
         shell: bash
 
       - name: Git Commit
