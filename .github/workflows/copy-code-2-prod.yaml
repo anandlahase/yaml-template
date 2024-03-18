@@ -54,6 +54,8 @@ jobs:
       - name: path
         run: |
           pwd
+          echo "Current directory: $(pwd)"
+          ls -l ./non-prod/extraVars/
 
       - name: Validate Input
         id: validate_input
