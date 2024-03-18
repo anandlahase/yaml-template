@@ -105,25 +105,3 @@ jobs:
           body: |
             Automated update of ${{ github.event.inputs.choice }} dropdown inputs.
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Wait for Approval
-        if: steps.create_pr.outputs.pull-request-created == 'true'
-        uses: andstor/wait-for-conclusion-action@v2
-        with:
-          issue-number: ${{ steps.create_pr.outputs.pull-request-number }}
-          checks: 'all'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Merge Pull Request
-        if: steps.wait_for_approval.outputs.conclusion == 'success'
-        uses: pascalgn/automerge-action@v0.15.5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          method: "squash"  # Or choose your preferred merge method
-
-      - name: Delete Branch
-        if: steps.merge_pr.outputs.pull-request-merged == 'true'
-        uses: actions-ecosystem/action-delete-branch@v1
-        with:
-          branch: 'update-${{ github.event.inputs.choice }}-inputs'  # Branch name modification
-          token: ${{ secrets.GITHUB_TOKEN }}
