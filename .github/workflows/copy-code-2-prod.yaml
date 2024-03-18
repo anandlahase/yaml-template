@@ -51,7 +51,7 @@ jobs:
         run: |
           pwd
           echo "Current directory: $(pwd)"
-          ls -l non-prod/extraVars/
+          ls -l main/non-prod/extraVars/
 
       - name: Validate Input
         id: validate_input
