@@ -106,28 +106,27 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Approve Pull Request
-        if: steps.create_pull_request.outputs.pull-request-created == 'true'
-        run: |
-          curl \
-            -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.create_pull_request.outputs.pull-request-number }}/reviews \
-            -d '{"event":"APPROVE"}'
+        if: steps.create_pr.outcome == 'success'
+        id: approve_pr
+        uses: juliangruber/approve-pull-request-action@v2.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.create_pr.outputs.pr_number }}
+          repo: ${{ github.repository }}
+
       - name: Merge Pull Request
-        if: steps.create_pull_request.outputs.pull-request-created == 'true'
-        run: |
-          curl \
-          -X PUT \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.create_pull_request.outputs.pull-request-number }}/merge \
-          -d '{"merge_method":"squash"}'
-      - name: Delete Branch
-        if: steps.merge_pull_request.outputs.pull-request-merged == 'true'
-        run: |
-          curl \
-          -X DELETE \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/${{ github.repository }}/git/refs/heads/update-${{ github.event.inputs.choice }}-inputs
+        if: steps.create_pr.outcome == 'success' && steps.approve_pr.outcome == 'success'
+        id: merge_pr
+        uses: pascalgn/automerge-action@v0.15.5
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST: ${{ github.repository }}/${{ steps.create_pr.outputs.pr_number }}
+          UPDATE_METHOD: merge
+
+      - name: Delete Merge Branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ github.repository_owner }}
+          repository: ${{ github.event.repository.name }}
+          branches: ${{ steps.create_branch.outputs.branch }}
