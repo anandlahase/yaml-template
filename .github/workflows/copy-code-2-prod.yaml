@@ -75,7 +75,6 @@ jobs:
                 echo "Inputs updated for $choice"
               else
                 echo "Directory $(pwd)/non-prod/extraVars/ does not exist."
-                exit 1
               fi
               ;;
             "inventory")
@@ -86,14 +85,15 @@ jobs:
               ;;
             *)
               echo "Invalid choice"
-              exit 1
               ;;
           esac
         shell: bash
 
 
       - name: Git Add
-        run: git add .
+        run: |
+          git add .
+          pwd
 
       - name: Git Commit
         run: |
