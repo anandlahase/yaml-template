@@ -41,14 +41,14 @@ jobs:
           path: job_repo
       - name: Create prod/ directories if not exist
         run: |
-          if [ ! -d "./home/runner/work/yaml-template/yaml-template/main/prod/extraVars" ]; then
-              mkdir -p ./home/runner/work/yaml-template/yaml-template/main/prod/extraVars
+          if [ ! -d "prod/extraVars" ]; then
+              mkdir -p prod/extraVars
           fi
-          if [ ! -d "./home/runner/work/yaml-template/yaml-template/main/prod//inventory" ]; then
-              mkdir -p ./home/runner/work/yaml-template/yaml-template/main/prod/inventory
+          if [ ! -d "prod/inventory" ]; then
+              mkdir -p prod/inventory
           fi
-          if [ ! -d "./home/runner/work/yaml-template/yaml-template/main/prod/deploymentManifest" ]; then
-              mkdir -p ./home/runner/work/yaml-template/yaml-template/main/prod/deploymentManifest
+          if [ ! -d "prod/deploymentManifest" ]; then
+              mkdir -p prod/deploymentManifest
           fi
 
       - name: path
@@ -73,12 +73,12 @@ jobs:
           case $choice in
             "extraVars")
               echo "Contents of non-prod/extraVars/ directory:"
-              ls -l ./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/
-              if [ -d "./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/" ]; then
-                cp ./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/*.json ./home/runner/work/yaml-template/yaml-template/main/prod/extraVars/ || (echo "Failed to copy JSON files." && exit 1)
+              ls -l non-prod/extraVars/
+              if [ -d "non-prod/extraVars/" ]; then
+                cp non-prod/extraVars/*.json prod/extraVars/ || (echo "Failed to copy JSON files." && exit 1)
                 echo "Inputs updated for $choice"
               else
-                echo "Directory ./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/ does not exist."
+                echo "Directory non-prod/extraVars/ does not exist."
                 exit 1
               fi
               ;;
