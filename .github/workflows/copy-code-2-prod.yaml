@@ -41,21 +41,21 @@ jobs:
           path: job_repo
       - name: Create prod/ directories if not exist
         run: |
-          if [ ! -d "./prod/extraVars" ]; then
-              mkdir -p ./prod/extraVars
+          if [ ! -d "./home/runner/work/yaml-template/yaml-template/main/prod/extraVars" ]; then
+              mkdir -p ./home/runner/work/yaml-template/yaml-template/main/prod/extraVars
           fi
-          if [ ! -d "./prod//inventory" ]; then
-              mkdir -p ./prod/inventory
+          if [ ! -d "./home/runner/work/yaml-template/yaml-template/main/prod//inventory" ]; then
+              mkdir -p ./home/runner/work/yaml-template/yaml-template/main/prod/inventory
           fi
-          if [ ! -d "./prod/deploymentManifest" ]; then
-              mkdir -p ./prod/deploymentManifest
+          if [ ! -d "./home/runner/work/yaml-template/yaml-template/main/prod/deploymentManifest" ]; then
+              mkdir -p ./home/runner/work/yaml-template/yaml-template/main/prod/deploymentManifest
           fi
 
       - name: path
         run: |
           pwd
           echo "Current directory: $(pwd)"
-          ls -l ./non-prod/extraVars/
+          ls -l ./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/
 
       - name: Validate Input
         id: validate_input
@@ -73,12 +73,12 @@ jobs:
           case $choice in
             "extraVars")
               echo "Contents of non-prod/extraVars/ directory:"
-              ls -l ./non-prod/extraVars/
-              if [ -d "./non-prod/extraVars/" ]; then
-                cp ./non-prod/extraVars/*.json ./prod/extraVars/ || (echo "Failed to copy JSON files." && exit 1)
+              ls -l ./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/
+              if [ -d "./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/" ]; then
+                cp ./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/*.json ./home/runner/work/yaml-template/yaml-template/main/prod/extraVars/ || (echo "Failed to copy JSON files." && exit 1)
                 echo "Inputs updated for $choice"
               else
-                echo "Directory ./non-prod/extraVars/ does not exist."
+                echo "Directory ./home/runner/work/yaml-template/yaml-template/main/non-prod/extraVars/ does not exist."
                 exit 1
               fi
               ;;
