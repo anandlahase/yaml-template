@@ -73,7 +73,14 @@ jobs:
                     fi
                     ;;
                 "inventory")
-                # Similarly handle other cases
+                    echo "Contents of $(pwd)/non-prod/inventory/ directory:"
+                    ls -l $(pwd)/non-prod/inventory/
+                    if [ -d "$(pwd)/non-prod/inventory/" ]; then
+                        cp $(pwd)/non-prod/inventory/*.json $(pwd)/prod/inventory/ || (echo "Failed to copy JSON files." && exit 1)
+                        echo "Inputs updated for $choice"
+                    else
+                        echo "Directory $(pwd)/non-prod/inventory/ does not exist."
+                    fi
                     ;;
                 "deploymentManifest")
                 # Similarly handle other cases
