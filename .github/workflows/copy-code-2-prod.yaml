@@ -46,13 +46,41 @@ jobs:
           fi
           ls -l $(pwd)/prod
 
-      - name: path
+      - name: Validate Input
+        id: validate_input
         run: |
-          pwd
-          echo "Current directory: $(pwd)"
-          ls -l $(pwd)/non-prod/extraVars/
+          choice="${{ github.event.inputs.choice }}"
+          if [[ $choice != "extraVars" && $choice != "inventory" && $choice != "deploymentManifest" ]]; then
+            echo "Invalid choice. Please choose one of: extraVars, inventory, deploymentManifest"
+            exit 1
+          fi
+          echo "::set-output name=CHOICE::$choice"
 
-
+      - name: Run Script
+        run: |
+          choice="extraVars"
+          case $choice in
+            "extraVars")
+              echo "Contents of $(pwd)/non-prod/extraVars/ directory:"
+              ls -l $(pwd)/non-prod/extraVars/
+              if [ -d "$(pwd)/non-prod/extraVars/" ]; then
+                cp $(pwd)/non-prod/extraVars/*.json $(pwd)/prod/extraVars/ || (echo "Failed to copy JSON files." && exit 1)
+                echo "Inputs updated for $choice"
+              else
+                echo "Directory $(pwd)/non-prod/extraVars/ does not exist."
+              fi
+              ;;
+            "inventory")
+              # Similarly handle other cases
+              ;;
+            "deploymentManifest")
+              # Similarly handle other cases
+              ;;
+            *)
+              echo "Invalid choice"
+              ;;
+          esac
+        shell: bash
 
 
       - name: Git Commit
