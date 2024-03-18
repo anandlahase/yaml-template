@@ -34,9 +34,11 @@ jobs:
         run: |
           if [ ! -d "$(pwd)/prod/extraVars" ]; then
               mkdir -p $(pwd)/prod/extraVars
+              touch $(pwd)/prod/extraVars/README.md
           fi
           if [ ! -d "$(pwd)/prod/inventory" ]; then
               mkdir -p $(pwd)/prod/inventory
+              touch $(pwd)/prod/inventory/README.md
           fi
           if [ ! -d "$(pwd)/prod/deploymentManifest" ]; then
               mkdir -p $(pwd)/prod/deploymentManifest
