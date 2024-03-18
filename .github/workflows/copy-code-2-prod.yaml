@@ -58,7 +58,6 @@ jobs:
 
       - name: Run Script
         run: |
-          choice="extraVars"
           case $choice in
             "extraVars")
               echo "Contents of $(pwd)/non-prod/extraVars/ directory:"
