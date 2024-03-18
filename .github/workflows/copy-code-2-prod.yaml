@@ -92,7 +92,7 @@ jobs:
         run: |
           git config --global user.email "lahase.anand@gmail.com"
           git config --global user.name "anandlahase"
-          git commit -am "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
+          git commit -am "Automated update of dropdown inputs"
           echo
 
       - name: Git Push
