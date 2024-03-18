@@ -82,7 +82,7 @@ jobs:
           echo "Invalid choice"
           ;;
         esac
-    shell: bash
+      shell: bash
 
       - name: Git Commit
         run: |
