@@ -29,6 +29,9 @@ jobs:
         with:
           branch: 'update-${{ github.event.inputs.choice }}-inputs'
 
+      - name: Verify Branch Creation  
+        run: echo "Branch created:${{ steps.create_branch.outputs.branch }}"
+
   
       - name: Create prod/ directories if not exist
         run: |
@@ -94,7 +97,8 @@ jobs:
     
 
       - name: Git Push
-        run: git push -u origin 'update-${{ github.event.inputs.choice }}-inputs'
+        if: steps.create_branch.outputs.branch != ''
+        run: git push origin ${{ steps.create_branch.outputs.branch }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
