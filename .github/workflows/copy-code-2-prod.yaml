@@ -12,10 +12,6 @@ on:
           - extraVars
           - inventory
           - deploymentManifest
-  push:
-    paths:
-      - 'prod/*'
-      - 'non-prod/*'
 
 jobs:
   update_and_merge:
