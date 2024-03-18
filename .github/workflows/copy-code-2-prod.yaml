@@ -22,10 +22,18 @@ jobs:
         with:
           ref: main
 
-      - name: checkout new branch in creating
-        run: |
-          git checkout -b New_branch
-          
+      - name: create branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'New_branch'
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: New_branch
+          path: job_repo
       - name: Create prod/ directories if not exist
         run: |
           if [ ! -d "$(pwd)/prod/extraVars" ]; then
@@ -45,23 +53,58 @@ jobs:
           echo "Current directory: $(pwd)"
           ls -l $(pwd)/non-prod/extraVars/
 
-      
+      - name: Validate Input
+        id: validate_input
+        run: |
+          choice="${{ github.event.inputs.choice }}"
+          if [[ $choice != "extraVars" && $choice != "inventory" && $choice != "deploymentManifest" ]]; then
+            echo "Invalid choice. Please choose one of: extraVars, inventory, deploymentManifest"
+            exit 1
+          fi
+          echo "::set-output name=CHOICE::$choice"
+
+      - name: Run Script
+        run: |
+          choice="extraVars"
+          case $choice in
+            "extraVars")
+              echo "Contents of $(pwd)/non-prod/extraVars/ directory:"
+              ls -l $(pwd)/non-prod/extraVars/
+              if [ -d "$(pwd)/non-prod/extraVars/" ]; then
+                cp $(pwd)/non-prod/extraVars/*.json $(pwd)/prod/extraVars/ || (echo "Failed to copy JSON files." && exit 1)
+                echo "Inputs updated for $choice"
+              else
+                echo "Directory $(pwd)/non-prod/extraVars/ does not exist."
+              fi
+              ;;
+            "inventory")
+              # Similarly handle other cases
+              ;;
+            "deploymentManifest")
+              # Similarly handle other cases
+              ;;
+            *)
+              echo "Invalid choice"
+              ;;
+          esac
+        shell: bash
+
 
       - name: Git Add
         run: |
+          git checkout New_branch
           git add .
-          git branch
-          ls -l $(pwd)/prod
+          git status
+          pwd
 
       - name: Git Commit
         run: |
-          git config --global user.email "lahase.anand@gmail.com"
-          git config --global user.name "anandlahase"
-          git commit -am "Automated update of dropdown inputs"
-          echo
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git commit -m "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
 
       - name: Git Push
-        run: git push -u New_branch:New_branch
+        run: git push -u origin New_branch
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
