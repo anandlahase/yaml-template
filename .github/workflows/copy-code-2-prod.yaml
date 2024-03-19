@@ -115,8 +115,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           title: "Update ${{ github.event.inputs.choice }} dropdown inputs"
-          # head: update-${{ github.event.inputs.choice }}-inputs
-          branch: update-${{ github.event.inputs.choice }}-inputs
+          head: update-${{ github.event.inputs.choice }}-inputs
           base: main
           commit-message: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
           body: |
