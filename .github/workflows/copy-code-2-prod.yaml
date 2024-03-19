@@ -116,7 +116,7 @@ jobs:
         with:
           destination_branch: main
           source_branch: update-${{ github.event.inputs.choice }}-inputs
-          pr_title: "fix: Update_Jenkins_Job_Template with ${{ inputs.release_tag }}"
+          pr_title: "testing new pr creation"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "merge"
       
