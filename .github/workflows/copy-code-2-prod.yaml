@@ -111,13 +111,17 @@ jobs:
         run: git push origin update-${{ github.event.inputs.choice }}-inputs
 
       - name: Create Pull Request
-        uses: repo-sync/pull-request@v2
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        uses: peter-evans/create-pull-request@v3
         with:
-          destination_branch: main
-          source_branch: update-${{ github.event.inputs.choice }}-inputs
-          pr_title: "testing new pr creation"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: "merge"
+          title: "Update ${{ github.event.inputs.choice }} dropdown inputs"
+          # head: update-${{ github.event.inputs.choice }}-inputs
+          branch: update-${{ github.event.inputs.choice }}-inputs
+          base: main
+          commit-message: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
+          body: |
+            Automated update of ${{ github.event.inputs.choice }} dropdown inputs.
+          token: ${{ secrets.GITHUB_TOKEN }}
       
 
       - name: Approve Pull Request
