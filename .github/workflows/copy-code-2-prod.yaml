@@ -25,7 +25,7 @@ jobs:
       - name: Create Branch
         uses: peterjgrainger/action-create-branch@v2.2.0
         env:
-          GITHUB_TOKEN: ${{ secrets.YAML_TEST_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ANLA_GIT_TOKEN }}
         with:
           branch: 'update-${{ github.event.inputs.choice }}-inputs'
 
@@ -120,7 +120,7 @@ jobs:
           commit-message: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
           body: |
             Automated update of ${{ github.event.inputs.choice }} dropdown inputs.
-          token: ${{ secrets.YAML_TEST_TOKEN }}
+          token: ${{ secrets.ANLA_GIT_TOKEN }}
       
 
       - name: Approve Pull Request
@@ -128,7 +128,7 @@ jobs:
         id: approve_pr
         uses: juliangruber/approve-pull-request-action@v2.0.0
         with:
-          github-token: ${{ secrets.YAML_TEST_TOKEN }}
+          github-token: ${{ secrets.ANLA_GIT_TOKEN }}
           number: ${{ steps.create_pr.outputs.pr_number }}
           repo: ${{ github.repository }}
 
@@ -137,14 +137,14 @@ jobs:
         id: merge_pr
         uses: pascalgn/automerge-action@v0.15.5
         with:
-          GITHUB_TOKEN: ${{ secrets.YAML_TEST_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ANLA_GIT_TOKEN }}
           PULL_REQUEST: ${{ github.repository }}/${{ steps.create_pr.outputs.pr_number }}
           UPDATE_METHOD: merge
 
       - name: Delete Merge Branch
         uses: dawidd6/action-delete-branch@v3
         with:
-          github_token: ${{ secrets.YAML_TEST_TOKEN }}
+          github_token: ${{ secrets.ANLA_GIT_TOKEN }}
           owner: ${{ github.repository_owner }}
           repository: ${{ github.event.repository.name }}
           branches: ${{ steps.create_branch.outputs.branch }}
