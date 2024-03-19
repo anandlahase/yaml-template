@@ -111,7 +111,7 @@ jobs:
         run: git push origin update-${{ github.event.inputs.choice }}-inputs
 
       - name: Create Pull Request
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
         uses: peter-evans/create-pull-request@v3
         with:
           title: "Update ${{ github.event.inputs.choice }} dropdown inputs"
