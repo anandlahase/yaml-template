@@ -121,6 +121,9 @@ jobs:
           body: |
             Automated update of ${{ github.event.inputs.choice }} dropdown inputs.
           token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: |
+              *.json
+               
       
 
       - name: Approve Pull Request
