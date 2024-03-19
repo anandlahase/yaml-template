@@ -83,7 +83,7 @@ jobs:
                     fi
                     ;;
                 "deploymentManifest")
-                echo "Contents of $(pwd)/non-prod/deploymentManifest/ directory:"
+                    echo "Contents of $(pwd)/non-prod/deploymentManifest/ directory:"
                     ls -l $(pwd)/non-prod/deploymentManifest/
                     if [ -d "$(pwd)/non-prod/deploymentManifest/" ]; then
                         cp $(pwd)/non-prod/deploymentManifest/*.json $(pwd)/prod/deploymentManifest/ || (echo "Failed to copy JSON files." && exit 1)
