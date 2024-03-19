@@ -111,17 +111,15 @@ jobs:
         run: git push origin update-${{ github.event.inputs.choice }}-inputs
 
       - name: Create Pull Request
-        # if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
-        uses: peter-evans/create-pull-request@v3
+        id: create_pr
+        uses: repo-sync/pull-request@v2
         with:
-          title: "Update ${{ github.event.inputs.choice }} dropdown inputs"
-          # head: update-${{ github.event.inputs.choice }}-inputs
-          branch: update-${{ github.event.inputs.choice }}-inputs
-          base: main
-          commit-message: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
-          body: |
-            Automated update of ${{ github.event.inputs.choice }} dropdown inputs.
-          token: ${{ secrets.GITHUB_TOKEN }}
+          destination_branch: main
+          source_branch: update-${{ github.event.inputs.choice }}-inputs
+          pr_title: "fix: Update_Jenkins_Job_Template with ${{ inputs.release_tag }}"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "merge"
+      
 
       - name: Approve Pull Request
         if: steps.create_pr.outcome == 'success'
