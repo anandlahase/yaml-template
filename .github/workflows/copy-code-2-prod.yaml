@@ -111,40 +111,14 @@ jobs:
         run: git push origin update-${{ github.event.inputs.choice }}-inputs
 
       - name: Create Pull Request
-        # if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
-        uses: peter-evans/create-pull-request@v3
+        id: create_pr
+        uses: repo-sync/pull-request@v2
         with:
-          title: "Update ${{ github.event.inputs.choice }} dropdown inputs"
-          branch: update-${{ github.event.inputs.choice }}-inputs
-          base: main
-          commit-message: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
-          body: |
-            Automated update of ${{ github.event.inputs.choice }} dropdown inputs.
-          token: ${{ secrets.ANAND_TEST_TOKEN }}
+          destination_branch: main
+          source_branch: update-${{ github.event.inputs.choice }}-inputs
+          pr_title: "update branch "
+          github_token: ${{ secrets.ANAND_TEST_TOKEN }}
+          pr_label: "test"
       
 
-      - name: Approve Pull Request
-        if: steps.create_pr.outcome == 'success'
-        id: approve_pr
-        uses: juliangruber/approve-pull-request-action@v2.0.0
-        with:
-          github-token: ${{ secrets.ANAND_TEST_TOKEN }}
-          number: ${{ steps.create_pr.outputs.pr_number }}
-          repo: ${{ github.repository }}
-
-      - name: Merge Pull Request
-        if: steps.create_pr.outcome == 'success' && steps.approve_pr.outcome == 'success'
-        id: merge_pr
-        uses: pascalgn/automerge-action@v0.15.5
-        with:
-          GITHUB_TOKEN: ${{ secrets.ANAND_TEST_TOKEN }}
-          PULL_REQUEST: ${{ github.repository }}/${{ steps.create_pr.outputs.pr_number }}
-          UPDATE_METHOD: merge
-
-      - name: Delete Merge Branch
-        uses: dawidd6/action-delete-branch@v3
-        with:
-          github_token: ${{ secrets.ANAND_TEST_TOKEN }}
-          owner: ${{ github.repository_owner }}
-          repository: ${{ github.event.repository.name }}
-          branches: ${{ steps.create_branch.outputs.branch }}
+     
