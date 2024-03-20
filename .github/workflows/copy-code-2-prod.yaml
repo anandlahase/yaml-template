@@ -133,10 +133,10 @@ jobs:
         if: steps.create_pr.outcome == 'success' && steps.approve_pr.outcome == 'success'
         id: merge_pr
         uses: pascalgn/automerge-action@v0.15.5
-        with:
-          github_token: ${{ secrets.ANIKET_TOKEN }}
-          pull_request: ${{ github.repository }}/${{ steps.create_pr.outputs.pr_number }}
-          update_method: merge
+        env:
+          GITHUB_TOKEN: ${{ secrets.ANAND_TEST_TOKEN }}
+          PULL_REQUEST: ${{ github.repository }}/${{ steps.create_pr.outputs.pr_number }}
+          UPDATE_METHOD: merge
 
       - name: Delete Merge Branch
         uses: dawidd6/action-delete-branch@v3
