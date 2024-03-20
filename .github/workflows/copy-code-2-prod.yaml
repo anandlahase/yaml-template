@@ -119,6 +119,14 @@ jobs:
           pr_title: "update branch "
           github_token: ${{ secrets.ANAND_TEST_TOKEN }}
           pr_label: "test"
-      
+
+      - name: Approve Pull Request
+        if: steps.create_pr.outcome == 'success'
+        id: approve_pr
+        uses: juliangruber/approve-pull-request-action@v2.0.0
+        with:
+          github-token: ${{ secrets.ANAND_TEST_TOKEN }}
+          number: ${{ steps.create_pr.outputs.pr_number }}
+          repo: ${{ github.repository }}
 
      
