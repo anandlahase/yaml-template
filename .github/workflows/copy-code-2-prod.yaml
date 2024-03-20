@@ -1,4 +1,4 @@
-name: Update and Merge Workflow
+name: Copy code to prod directories
 
 on:
   workflow_dispatch:
@@ -116,7 +116,7 @@ jobs:
         with:
           destination_branch: main
           source_branch: update-${{ github.event.inputs.choice }}-inputs
-          pr_title: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
+          pr_title: "Automated update of ${{ github.event.inputs.choice }} inputs"
           github_token: ${{ secrets.ANAND_TEST_TOKEN }}
           pr_label: "automerge"
 
@@ -146,5 +146,3 @@ jobs:
           owner: ${{ github.repository_owner }}
           repository: ${{ github.event.repository.name }}
           branches: update-${{ github.event.inputs.choice }}-inputs
-
-     
