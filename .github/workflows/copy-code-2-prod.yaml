@@ -116,7 +116,7 @@ jobs:
         with:
           destination_branch: main
           source_branch: update-${{ github.event.inputs.choice }}-inputs
-          pr_title: "update branch "
+          pr_title: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
           github_token: ${{ secrets.ANAND_TEST_TOKEN }}
           pr_label: "test"
 
