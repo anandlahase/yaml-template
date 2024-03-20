@@ -145,6 +145,6 @@ jobs:
           github_token: ${{ secrets.ANAND_TEST_TOKEN }}
           owner: ${{ github.repository_owner }}
           repository: ${{ github.event.repository.name }}
-          branch: update-${{ github.event.inputs.choice }}-inputs
+          branches: update-${{ github.event.inputs.choice }}-inputs
 
      
