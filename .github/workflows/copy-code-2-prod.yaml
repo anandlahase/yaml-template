@@ -139,6 +139,7 @@ jobs:
           UPDATE_METHOD: merge
 
       - name: Delete Merge Branch
+        if: steps.merge_pr.outcome == 'success'
         uses: dawidd6/action-delete-branch@v3
         with:
           github_token: ${{ secrets.ANAND_TEST_TOKEN }}
