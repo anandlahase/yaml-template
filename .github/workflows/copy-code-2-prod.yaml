@@ -134,7 +134,7 @@ jobs:
         id: merge_pr
         uses: pascalgn/automerge-action@v0.15.5
         env:
-          GITHUB_TOKEN: ${{ secrets.ANAND_TEST_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ANIKET_TOKEN }}
           PULL_REQUEST: ${{ github.repository }}/${{ steps.create_pr.outputs.pr_number }}
           UPDATE_METHOD: merge
 
