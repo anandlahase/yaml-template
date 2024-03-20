@@ -118,7 +118,7 @@ jobs:
           source_branch: update-${{ github.event.inputs.choice }}-inputs
           pr_title: "Automated update of ${{ github.event.inputs.choice }} dropdown inputs"
           github_token: ${{ secrets.ANAND_TEST_TOKEN }}
-          pr_label: "test"
+          pr_label: "test, automerge"
 
       - name: Approve Pull Request
         if: steps.create_pr.outcome == 'success'
