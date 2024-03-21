@@ -32,11 +32,15 @@ jobs:
       - name: Verify Branch Creation  
         run: echo "Branch created:${{ steps.create_branch.outputs.branch }}"
 
-      - name: Create prod/ directories if not exist
+      - name: Create prod directories if not exist
         run: |
-          mkdir -p $(pwd)/prod/${{ github.event.inputs.choice }}
-          touch $(pwd)/prod/${{ github.event.inputs.choice }}/README.md
-          ls -l $(pwd)/prod/${{ github.event.inputs.choice }}
+          for dir in extraVars inventory deploymentManifest; do
+            if [ ! -d "$(pwd)/prod/$dir" ]; then
+              mkdir -p "$(pwd)/prod/$dir"
+              touch "$(pwd)/prod/$dir/README.md"
+            fi
+          done
+          ls -l $(pwd)/prod
 
       - name: Copy files to prod directories
         run: |
