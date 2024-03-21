@@ -34,18 +34,15 @@ jobs:
 
       - name: Create prod/ directories if not exist
         run: |
-          if [ ! -d "$(pwd)/prod/extraVars" ]; then
-              mkdir -p $(pwd)/prod/extraVars
-              touch $(pwd)/prod/extraVars/README.md
-          fi
-          if [ ! -d "$(pwd)/prod/inventory" ]; then
-              mkdir -p $(pwd)/prod/inventory
-              touch $(pwd)/prod/inventory/README.md
-          fi
-          if [ ! -d "$(pwd)/prod/deploymentManifest" ]; then
-              mkdir -p $(pwd)/prod/deploymentManifest
-              touch $(pwd)/prod/deploymentManifest/README.md
-          fi
-          ls -l $(pwd)/prod
+          mkdir -p $(pwd)/prod/${{ github.event.inputs.choice }}
+          touch $(pwd)/prod/${{ github.event.inputs.choice }}/README.md
+          ls -l $(pwd)/prod/${{ github.event.inputs.choice }}
+
+      - name: Copy files to prod directories
+        run: |
+          for file in $(pwd)/non-prod/${{ github.event.inputs.choice }}/*.json; do
+            cp "$file" "$(pwd)/prod/${{ github.event.inputs.choice }}/$(basename $file)"
+          done
+          ls -l $(pwd)/prod/${{ github.event.inputs.choice }}
 
      
