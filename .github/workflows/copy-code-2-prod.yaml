@@ -35,12 +35,12 @@ jobs:
       - name: Create prod directories if not exist
         run: |
           for dir in extraVars inventory deploymentManifest; do
-            if [ ! -d "$(pwd)/prod/$dir" ]; then
-              mkdir -p "$(pwd)/prod/$dir"
-              touch "$(pwd)/prod/$dir/README.md"
+            if [ ! -d "prod/$dir" ]; then
+              mkdir -p "prod/$dir"
+              touch "prod/$dir/README.md"
             fi
           done
-          ls -l $(pwd)/prod
+          ls -l prod
 
       - name: Copy files to prod directories
         run: |
