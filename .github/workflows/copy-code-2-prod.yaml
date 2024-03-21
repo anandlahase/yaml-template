@@ -7,7 +7,7 @@ on:
         type: choice
         description: 'Select input to update'
         required: true
-        # default: 'extraVars'
+        default: 'extraVars'
         options:
           - extraVars
           - inventory
