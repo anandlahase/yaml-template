@@ -34,6 +34,7 @@ jobs:
 
       - name: Create prod directories if not exist
         run: |
+          cd $GITHUB_WORKSPACE
           for dir in extraVars inventory deploymentManifest; do
             if [ ! -d "prod/$dir" ]; then
               mkdir -p "prod/$dir"
@@ -41,6 +42,7 @@ jobs:
             fi
           done
           ls -l prod
+
 
       - name: Copy files to prod directories
         run: |
